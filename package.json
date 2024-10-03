@@ -9,18 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.7",
+    "date-fns": "^4.1.0",
+    "leaflet": "^1.9.4",
+    "next": "14.2.14",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.14"
+    "react-leaflet": "^4.2.1",
+    "react-redux": "^9.1.2",
+    "tabler-icons-react": "^1.56.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/leaflet": "^1.9.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.14",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.14"
+    "typescript": "^5"
   }
 }
