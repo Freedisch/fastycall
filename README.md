@@ -51,26 +51,15 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## Project Structure
+## Project Architecture
 
-```
-fastycall/
-├── app/
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── EmergencyDetailsSidebar.tsx
-│   ├── Map.tsx
-│   └── Sidebar.tsx
-├── public/
-├── styles/
-│   └── globals.css
-├── .env.local
-├── next.config.js
-├── package.json
-├── README.md
-└── tsconfig.json
-```
+![design](https://github.com/user-attachments/assets/5ccf2151-4856-455a-81d4-4f7fe4f1fffd)
+
+
+## User Workflow
+
+![workflowai](https://github.com/user-attachments/assets/332948a6-f1bd-4917-998e-33f8c9b58b22)
+
 
 ## Usage
 
