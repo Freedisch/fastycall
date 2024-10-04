@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fastycall
 
-## Getting Started
+Fastycall is a modern emergency call management system built with Next.js, React, and Leaflet. It provides an intuitive interface for managing and visualizing emergency incidents in real-time.
 
-First, run the development server:
+## Features
 
-```bash
+- Interactive sidebar displaying recent emergency calls
+- Dynamic map visualization of incident locations
+- Detailed emergency information sidebar
+- Smooth animations for transitioning between incidents
+- Mock data simulating real-time emergency scenarios in Kigali, Rwanda
+
+## Technologies Used
+
+- Next.js 13 with App Router
+- React 18
+- TypeScript
+- Tailwind CSS for styling
+- Leaflet for map integration
+- date-fns for date formatting
+- tabler-icons-react for icons
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+- Node.js (v14 or later)
+- npm (v6 or later)
+
+## Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/freedisch/fastycall.git
+   cd fastycall
+   ```
+
+2. Install the dependencies:
+   ```
+   npm install
+   ```
+
+3. Create a `.env.local` file in the root directory and add any necessary environment variables (if applicable).
+
+## Running the Application
+
+To start the development server:
+
+```
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+fastycall/
+├── app/
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── EmergencyDetailsSidebar.tsx
+│   ├── Map.tsx
+│   └── Sidebar.tsx
+├── public/
+├── styles/
+│   └── globals.css
+├── .env.local
+├── next.config.js
+├── package.json
+├── README.md
+└── tsconfig.json
+```
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. The main page displays a sidebar with a list of recent emergency calls.
+2. Click on an emergency call in the sidebar to view its location on the map.
+3. The map will smoothly transition to the selected incident's location.
+4. A detailed sidebar will appear from the right, showing more information about the selected incident.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Acknowledgments
+
+- OpenStreetMap for providing map data
+- The Next.js team for their excellent framework
