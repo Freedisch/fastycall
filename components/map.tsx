@@ -20,7 +20,7 @@ const Map: React.FC<MapProps> = ({ selectedCall }) => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "", // Replace with your actual API key
+      apiKey: `${process.env.GOOGLE_API_KEY}`, // Replace with your actual API key
       version: "weekly",
     });
 

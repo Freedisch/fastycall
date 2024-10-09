@@ -1,7 +1,5 @@
 // utils/locationUtils.ts
 
-const GOOGLE_API_KEY = ''; // Replace with your actual API key
-
 export const getStaticMapImage = (latitude: number, longitude: number): string => {
   const baseUrl = 'https://maps.googleapis.com/maps/api/staticmap';
   const params = new URLSearchParams({
@@ -10,7 +8,7 @@ export const getStaticMapImage = (latitude: number, longitude: number): string =
     size: '400x200',
     maptype: 'roadmap',
     markers: `color:red|${latitude},${longitude}`,
-    key: GOOGLE_API_KEY
+    key: `${process.env.GOOGLE_API_KEY}`
   });
 
   return `${baseUrl}?${params.toString()}`;
@@ -20,7 +18,7 @@ export const getLocationName = async (latitude: number, longitude: number): Prom
   const baseUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
   const params = new URLSearchParams({
     latlng: `${latitude},${longitude}`,
-    key: GOOGLE_API_KEY
+    key: `${process.env.GOOGLE_API_KEY}`
   });
 
   try {
