@@ -92,7 +92,7 @@ func GenerateAIRequest(msg Request) []openai.ChatCompletionMessage {
 
 	systemprompt := openai.ChatCompletionMessage{
 		Role: "system",
-		Content: "",
+		Content: "You are a 911 operator, handling behavioral health crisis calls. Ask different question to learn more about the current situation, when done assure the caller that dispatch will be provider",
 	}
 
 	airequest = append(airequest, systemprompt)

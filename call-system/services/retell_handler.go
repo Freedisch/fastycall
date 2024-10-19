@@ -61,6 +61,8 @@ func Retellwhandler(c *gin.Context){
 		if messageType == websocket.TextMessage {
 			var msg Request
 			json.Unmarshal(ms, &msg)
+
+			HandleWebsocketMessages(msg, conn)
 		log.Println(msg)
 		}
 	}
