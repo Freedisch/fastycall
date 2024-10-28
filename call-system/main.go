@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"fastycall.com/call/services"
+	"fastycall.com/call/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -14,6 +15,10 @@ func main() {
 	if err != nil {
 		log.Fatal("Cannot retrieve call \n")
 	}
+	// Initialize Firebase
+	utils.InitializeFirebase()
+	defer utils.CloseFirestoreConnection()
+
 	app := gin.Default()
 	app.Any("/llm-websocket/:call_id", services.Retellwhandler)
 	app.POST("/twilio-webhook/:agent_id", services.Twiliowebhookhandler)
