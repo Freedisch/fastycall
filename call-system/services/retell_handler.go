@@ -1,12 +1,15 @@
 package services
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
 
+	"fastycall.com/call/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/sashabaranov/go-openai"
 )
 
 type Transcripts struct {
@@ -27,6 +30,14 @@ type Response struct {
 	EndCall bool `json:"end_call"`
 }
 
+type CallSession struct {
+    InitialResponseID int
+    CurrentResponseID int
+    Status string
+}
+
+var activeSessions = make(map[*websocket.Conn]*CallSession)
+
 func Retellwhandler(c *gin.Context){
 	upgrader := websocket.Upgrader{}
 
@@ -45,11 +56,18 @@ func Retellwhandler(c *gin.Context){
 		ContentComplete: true,
 		EndCall: false,
 	}
+	activeSessions[conn] = &CallSession{
+        InitialResponseID: response.ResponseID,
+        CurrentResponseID: response.ResponseID,
+        Status: "active",
+    }
+    defer delete(activeSessions, conn)
 
 	err = conn.WriteJSON(response)
 	if err != nil {
 		log.Fatal(err)
 	}
+	var msg Request
 
 	for {
 		messageType, ms, err := conn.ReadMessage()
@@ -59,11 +77,28 @@ func Retellwhandler(c *gin.Context){
 		}
 
 		if messageType == websocket.TextMessage {
-			var msg Request
+			
 			json.Unmarshal(ms, &msg)
 
-			HandleWebsocketMessages(msg, conn)
-		log.Println(msg)
+			session := activeSessions[conn]
+            session.CurrentResponseID = msg.ResponseID
+
+			HandleWebsocketMessages(msg, conn, session)
+			log.Println(msg)
+		}
+	}
+	client := openai.NewClient(utils.GetOpenAISecretKey())
+	emergencyCall, err := AnalyzeEmergencyCall(msg, client)
+	if err != nil {
+		log.Printf("Error analyzing emergency call: %v", err)
+	} else {
+		emergencyCall.CallStatus = "active"
+
+		//save in firestore
+		sessionDocRef := utils.FirestoreClient.Collection("calls").NewDoc()
+		_, err = sessionDocRef.Set(context.Background(), emergencyCall)
+		if err != nil {
+			log.Printf("Error saving emergency call: %v", err)
 		}
 	}
 }

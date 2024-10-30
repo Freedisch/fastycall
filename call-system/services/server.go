@@ -7,49 +7,21 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"strconv"
 
 	"fastycall.com/call/utils"
 	"github.com/gorilla/websocket"
 	"github.com/sashabaranov/go-openai"
 )
 
-func HandleWebsocketMessages(msg Request, conn *websocket.Conn) {
+func HandleWebsocketMessages(msg Request, conn *websocket.Conn,  session *CallSession) {
 	client := openai.NewClient(utils.GetOpenAISecretKey())
+	//docRef := utils.FirestoreClient.Collection("calls").Doc(strconv.Itoa(session.InitialResponseID))
 
 	if msg.InteractionType == "update_only" {
 		log.Println("update interaction, do nothing ")
 		return
 	}
 	fmt.Println("founnfnfnf %v", msg.InteractionType)
-
-	if msg.InteractionType == "end_call" {
-		emergencyCall, err := AnalyzeEmergencyCall(msg, client)
-		if err != nil {
-			log.Printf("Error analyzing emergency call: %v", err)
-		} else {
-			emergencyCall.CallStatus = "active"
-
-			//save in firestore
-			doc_ref := utils.FirestoreClient.Collection("calls").Doc(strconv.Itoa(msg.ResponseID))
-			_, err = doc_ref.Set(context.Background(), emergencyCall)
-			if err != nil {
-				log.Printf("Error saving emergency call: %v", err)
-			}
-		}
-	}
-
-	emergencyCall, err := AnalyzeEmergencyCall(msg, client)
-	if err != nil {
-		log.Printf("Error analyzing emergency call: %v", err)
-	} else {
-		// Save to database
-		doc_ref := utils.FirestoreClient.Collection("calls").Doc(strconv.Itoa(msg.ResponseID))
-		_, err = doc_ref.Set(context.Background(), emergencyCall)
-		if err != nil {
-			log.Printf("Error saving emergency call: %v", err)
-		}
-	}
 
 	prompt := GenerateAIRequest(msg)
 	req := openai.ChatCompletionRequest{
@@ -74,9 +46,9 @@ func HandleWebsocketMessages(msg Request, conn *websocket.Conn) {
 				s = "[ERROR] NO RESPONSE, PLEASE RETRY"
 			}
 
-			if errors.Is(err, io.EOF) && i != 0{
-				s = "\n\n###### [END] ######"
-			}
+			// if errors.Is(err, io.EOF) && i != 0{
+			// 	s = "\n\n###### [END] ######"
+			// }
 			airesponse := Response{
 				ResponseID: msg.ResponseID,
 				Content: s,
@@ -116,6 +88,8 @@ func HandleWebsocketMessages(msg Request, conn *websocket.Conn) {
 		}
 		i = i + 1
 	}
+	
+
 }
 
 func GenerateAIRequest(msg Request) []openai.ChatCompletionMessage {
@@ -123,7 +97,7 @@ func GenerateAIRequest(msg Request) []openai.ChatCompletionMessage {
 
 	systemprompt := openai.ChatCompletionMessage{
 		Role: "system",
-		Content: "You are a 911 operator, handling behavioral health crisis calls. Ask different question to learn more about the current situation, when done assure the caller that dispatch will be provider",
+		Content: "You are a 911 operator, handling behavioral health crisis calls. Ask simple and direct question to learn more about the caller situation and send help as fast as possible, asking questions about the user location, and other details that can be helpful",
 	}
 
 	airequest = append(airequest, systemprompt)
