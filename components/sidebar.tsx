@@ -6,14 +6,32 @@ import * as allIcons from "tabler-icons-react";
 import { formatDistanceToNow } from 'date-fns';
 import EmergencyDetailsSidebar from '@/components/emergencyPopUp';
 import { Input } from '@/components/ui/input';
-import { mockCalls } from '@/mocks/transcripts';
 import { getThreatBadgeColor, getThreatLevel } from '@/app/lib/maputils';
+import { collection, onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { db } from '@/app/lib/firebase';
 
 
 
   
   
-  export type Call = typeof mockCalls[0];
+  export interface Call {
+    id: string;
+    shortSummary: string;
+    detailedSummary: string;
+    icon: string;
+    callStatus: string;
+    createdDate: Date;
+    fearLevel: number;
+    stressLevel: number;
+    location: {
+      lat: number;
+      lng: number;
+    };
+    transcript: Array<{
+      Role: string;
+      Message: string;
+    }>;
+  }
 
   interface SidebarProps {
     onCallSelect: (call: Call) => void;
@@ -28,22 +46,110 @@ import { getThreatBadgeColor, getThreatLevel } from '@/app/lib/maputils';
   const Sidebar: React.FC<SidebarProps> = ({ onCallSelect }) => {
     const [selectedCall, setSelectedCall] = useState<Call | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredCalls, setFilteredCalls] = useState(mockCalls);
+    const [calls, setCalls] = useState<Call[]>([]);
+    const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+      console.log('Starting Firestore connection...');
+      
+      // First, let's try to get documents directly
+      const fetchCalls = async () => {
+        try {
+          const callsRef = collection(db, 'calls');
+          console.log('Collection reference created');
+          
+          const querySnapshot = await getDocs(callsRef);
+          console.log('Raw Firestore data:', querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+          
+          const callsData = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            console.log('Processing document:', doc.id, data);
+            const mappedTranscript = data.Transcript?.map((entry: { Role: any; Message: any; }) => ({
+              Role: entry.Role,
+              Message: entry.Message
+            })) || [];
+            console.log("transcript", mappedTranscript)
+            return {
+              id: doc.id,
+              shortSummary: data.ShortSummary || 'No Summary',
+              detailedSummary: data.DetailedSummary || '',
+              icon: data.icon || 'Activity',
+              callStatus: data.CallStatus || 'active',
+              createdDate: new Date(),
+              fearLevel: data.FearLevel || 0,
+              stressLevel: data.StressLevel || 0,
+              location: { lat: -1.9394, lng: 30.0559 },
+              transcript: mappedTranscript
+            } as Call;
+          });
+          
+          console.log('Processed calls data:', callsData);
+          setCalls(callsData);
+          setFilteredCalls(callsData);
+        } catch (err) {
+          console.error('Error fetching calls:', err);
+          setError(err instanceof Error ? err.message : 'Unknown error');
+        }
+      };
+  
+      fetchCalls();
+  
+      // Then set up real-time listener
+      // const q = query(collection(db, 'calls'), orderBy('createdDate', 'desc'));
+      
+      // const unsubscribe = onSnapshot(q, 
+      //   (snapshot) => {
+      //     console.log('Snapshot received, docs count:', snapshot.docs.length);
+          
+      //     const updatedCalls = snapshot.docs.map(doc => {
+      //       const data = doc.data();
+      //       console.log('Processing doc in snapshot:', doc.id, data);
+            
+      //       return {
+      //         id: doc.id,
+      //         shortSummary: data.ShortSummary || 'No Summary',
+      //         detailedSummary: data.DetailedSummary || '',
+      //         icon: data.icon || 'Activity',
+      //         callStatus: data.CallStatus || 'active',
+      //         createdDate: data.CreatedDate ? new Date(data.createdDate * 1000) : new Date(),
+      //         fearLevel: data.FearLevel || 0,
+      //         stressLevel: data.StressLevel || 0,
+      //         location: data.Location || { lat: 0, lng: 0 },
+      //         transcript: data.Transcript || []
+      //       } as Call;
+      //     });
+  
+      //     console.log('Setting calls:', updatedCalls);
+      //     setCalls(updatedCalls);
+      //     setFilteredCallsx(updatedCalls);
+      //   },
+      //   (error) => {
+      //     console.error('Snapshot error:', error);
+      //     console.error("errror", error.message)
+      //     setError(error.message);
+      //   }
+      // );
+  
+      
+    }, []);
+  
+    // Add error display
   
     useEffect(() => {
       const lowercasedFilter = searchTerm.toLowerCase();
-      const filtered = mockCalls.filter(call => 
+      const filtered = calls.filter(call => 
         call.shortSummary.toLowerCase().includes(lowercasedFilter)
       );
       setFilteredCalls(filtered);
-    }, [searchTerm]);
+    }, [searchTerm, calls]);
   
     const sortedCalls = [...filteredCalls].sort((a, b) => b.createdDate.getTime() - a.createdDate.getTime());
     
   
-    const totalIncidents = mockCalls.length;
-    const resolvedIncidents = mockCalls.filter(call => call.callStatus !== "active").length;
-    const criticalIncidents = mockCalls.filter(call => getThreatLevel(call.fearLevel, call.stressLevel) === "high").length;
+    const totalIncidents = calls.length;
+    const resolvedIncidents = calls.filter(call => call.callStatus !== "active").length;
+    const criticalIncidents = calls.filter(call => getThreatLevel(call.fearLevel, call.stressLevel) === "high").length;
   
     
   

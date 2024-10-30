@@ -47,14 +47,14 @@ const LiveTranscript: React.FC<LiveTranscriptProps> = ({ call, onClose }) => {
       <div className="flex-1 overflow-y-auto p-4 bg-gray-900">
         <h3 className="text-lg font-semibold mb-2 text-gray-300">CALL TRANSCRIPT</h3>
         {call.transcript.map((entry, index) => (
-          <div key={index} className={`mb-4 ${entry.role === 'caller' ? '' : 'flex'}`}>
-            {entry.role === 'responder' && (
+          <div key={index} className={`mb-4 ${entry.Role === 'user' ? '' : 'flex'}`}>
+            {entry.Role === 'agent' && (
               <div className="w-8 h-8 bg-gray-700 rounded-full flex-shrink-0 mr-2 flex items-center justify-center">
                 <span className="text-gray-300">🤖</span>
               </div>
             )}
-            <div className={`${entry.role === 'caller' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-200'} p-3 rounded-lg inline-block max-w-[80%]`}>
-              {entry.message}
+            <div className={`${entry.Role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-200'} p-3 rounded-lg inline-block max-w-[80%]`}>
+              {entry.Message}
             </div>
           </div>
         ))}
