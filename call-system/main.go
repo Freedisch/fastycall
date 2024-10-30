@@ -13,7 +13,7 @@ func main() {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Fatal("Cannot retrieve call \n")
+		log.Fatal("Cannot retrieve call %s", err)
 	}
 	// Initialize Firebase
 	utils.InitializeFirebase()

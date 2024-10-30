@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"log"
+	"strconv"
 
 	"fastycall.com/call/utils"
 	"github.com/gorilla/websocket"
@@ -18,6 +20,35 @@ func HandleWebsocketMessages(msg Request, conn *websocket.Conn) {
 	if msg.InteractionType == "update_only" {
 		log.Println("update interaction, do nothing ")
 		return
+	}
+	fmt.Println("founnfnfnf %v", msg.InteractionType)
+
+	if msg.InteractionType == "end_call" {
+		emergencyCall, err := AnalyzeEmergencyCall(msg, client)
+		if err != nil {
+			log.Printf("Error analyzing emergency call: %v", err)
+		} else {
+			emergencyCall.CallStatus = "active"
+
+			//save in firestore
+			doc_ref := utils.FirestoreClient.Collection("calls").Doc(strconv.Itoa(msg.ResponseID))
+			_, err = doc_ref.Set(context.Background(), emergencyCall)
+			if err != nil {
+				log.Printf("Error saving emergency call: %v", err)
+			}
+		}
+	}
+
+	emergencyCall, err := AnalyzeEmergencyCall(msg, client)
+	if err != nil {
+		log.Printf("Error analyzing emergency call: %v", err)
+	} else {
+		// Save to database
+		doc_ref := utils.FirestoreClient.Collection("calls").Doc(strconv.Itoa(msg.ResponseID))
+		_, err = doc_ref.Set(context.Background(), emergencyCall)
+		if err != nil {
+			log.Printf("Error saving emergency call: %v", err)
+		}
 	}
 
 	prompt := GenerateAIRequest(msg)
