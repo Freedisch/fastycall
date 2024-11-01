@@ -50,13 +50,18 @@ Before you begin, ensure you have the following installed:
 
 ## Running the Application
 
-To start the development server:
+To start the development frontend server:
 
 ```
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+
+## Running the Server
+
+To run the server and AI model checkout the `call-system` folder [README file](https://github.com/Freedisch/fastycall/tree/main/call-system)
 
 ## Project Architecture
 
