@@ -5,6 +5,10 @@ Fastycall is a modern emergency call management system built with Next.js, React
 ## Video Link
 https://youtu.be/8q46ddljIds 
 
+## Project Link
+
+https://fastycall-kmiy.vercel.app/ 
+
 ## Features
 
 - Interactive sidebar displaying recent emergency calls
