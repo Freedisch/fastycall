@@ -42,7 +42,7 @@ Before you begin, ensure you have the following installed:
    npm install
    ```
 
-3. Create a `.env.local` file in the root directory and add any necessary environment variables (if applicable).
+3. Create a `.env.local` file in the root directory and add any necessary environment variables.
 
 ## Running the Application
 
