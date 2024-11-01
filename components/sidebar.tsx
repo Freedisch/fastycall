@@ -81,7 +81,7 @@ import { db } from '@/app/lib/firebase';
               createdDate: new Date(),
               fearLevel: data.FearLevel || 0,
               stressLevel: data.StressLevel || 0,
-              location: { lat: -1.9394, lng: 30.0559 },
+              location: { lat: data.Location.Lat || -1.9394, lng: data.Location.Lng || -1.9394 },
               transcript: mappedTranscript
             } as Call;
           });
