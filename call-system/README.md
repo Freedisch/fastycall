@@ -1,6 +1,4 @@
-# AI Buddy - Voice Chat Application
-
-This application allows you to build an AI buddy that you can call and chat with about your day. It uses OpenAI for chat capabilities, Twilio Programmable Voice for voice calls, and Retell AI for converting text responses to human-like speech.
+# Fastycall Responder
 
 ## Prerequisites
 
