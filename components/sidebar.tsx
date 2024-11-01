@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/Sidebar.tsx
 'use client';
 
@@ -7,7 +8,7 @@ import { formatDistanceToNow } from 'date-fns';
 import EmergencyDetailsSidebar from '@/components/emergencyPopUp';
 import { Input } from '@/components/ui/input';
 import { getThreatBadgeColor, getThreatLevel } from '@/app/lib/maputils';
-import { collection, onSnapshot, query, orderBy, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/app/lib/firebase';
 
 
@@ -48,6 +49,7 @@ import { db } from '@/app/lib/firebase';
     const [searchTerm, setSearchTerm] = useState('');
     const [calls, setCalls] = useState<Call[]>([]);
     const [filteredCalls, setFilteredCalls] = useState<Call[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

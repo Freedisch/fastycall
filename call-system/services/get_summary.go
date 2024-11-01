@@ -50,7 +50,7 @@ func AnalyzeEmergencyCall(msg Request, client *openai.Client) (*EmergencyCall, e
 	2. A detailed summary (2-3 sentences)
 	3. Fear level (0-100)
 	4. Stress level (0-100)
-	5. Location details (extract lat/lng if mentioned, otherwise null)
+	5. Location details (extract lat/lng)
 	6. Appropriate icon (one of: Car, Medical, Fire, Police)
 
 	Conversation transcript:

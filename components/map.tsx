@@ -16,18 +16,19 @@ const Map: React.FC<MapProps> = ({ selectedCall }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [infoWindow, setInfoWindow] = useState<google.maps.InfoWindow | null>(null);
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: `${process.env.GOOGLE_API_KEY}`, // Replace with your actual API key
+      apiKey: `${process.env.GOOGLE_API_KEY}`, 
       version: "weekly",
     });
 
     loader.load().then(() => {
       if (mapRef.current) {
         const mapOptions: google.maps.MapOptions = {
-          center: { lat: -1.9441, lng: 30.0619 }, // Default to Kigali city center
+          center: { lat: -1.9441, lng: 30.0619 },
           zoom: 12,
           styles: [
             { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
