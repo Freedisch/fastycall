@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"fastycall.com/call/services"
 	"fastycall.com/call/utils"
 	"github.com/gin-gonic/gin"
@@ -10,11 +8,11 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	_ = godotenv.Load()
 
-	if err != nil {
-		log.Fatal("Cannot retrieve call %s", err)
-	}
+	// if err != nil {
+	// 	log.Fatal("Cannot retrieve call %s", err)
+	// }
 	// Initialize Firebase
 	utils.InitializeFirebase()
 	defer utils.CloseFirestoreConnection()
