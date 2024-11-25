@@ -1,34 +1,37 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+import "./css/style.css";
 import "./globals.css";
+import { Inter, Architects_Daughter } from "next/font/google";
+import Header from "@/components/ui/header";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "FastyCall",
-  description: "Make every second count with FastyCall",
-};
+const architects_daughter = Architects_Daughter({
+  subsets: ["latin"],
+  variable: "--font-architects-daughter",
+  weight: "400",
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-900 text-gray-200 tracking-tight`}
       >
-        {children}
+        <div className="flex flex-col min-h-screen overflow-hidden">
+          <Header />
+          {children}
+          <Toaster position="bottom-right" />
+        </div>
       </body>
     </html>
   );

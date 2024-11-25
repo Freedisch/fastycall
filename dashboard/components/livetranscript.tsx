@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { X } from 'tabler-icons-react';
-import { Call } from '@/components/sidebar';
+import { Call } from './sidebar';
 
 interface LiveTranscriptProps {
   call: Call;

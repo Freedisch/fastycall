@@ -3,7 +3,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
-import { Call } from '@/components/sidebar';  // Import the Call type
+import { Call } from './sidebar';
+ // Import the Call type
 
 // Add this line to include the type definitions
 /// <reference types="@types/google.maps" />
