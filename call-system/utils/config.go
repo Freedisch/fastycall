@@ -14,7 +14,11 @@ var FirestoreClient *firestore.Client
 
 func InitializeFirebase() {
 	// Use the service account JSON file directly
-	opt := option.WithCredentialsFile("/opt/firebase.json")
+	credJSON := GetFirebaseSDKConfig()
+	if credJSON == "" {
+		log.Fatal("FIREBASE_ADMIN_SDK_CONFIG environment variable not set")
+	}
+	opt := option.WithCredentialsJSON([]byte(credJSON))
 	
 	config := &firebase.Config{}
 	

@@ -9,3 +9,7 @@ func GetRetellAISecretKey() string {
 func GetOpenAISecretKey() string {
 	return os.Getenv("OPENAI_API_KEY")
 }
+
+func GetFirebaseSDKConfig() string {
+	return os.Getenv("FIREBASE_SDK_ADMIN")
+}
