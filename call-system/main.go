@@ -20,7 +20,8 @@ func main() {
 
 	app := gin.Default()
 	app.GET("/", services.HealthCheck)
+	app.GET("/healthcheck", services.HealthCheck)
 	app.Any("/llm-websocket/:call_id", services.Retellwhandler)
 	app.POST("/twilio-webhook/:agent_id", services.Twiliowebhookhandler)
-	app.Run("localhost:8081")
+	app.Run(":8081")
 }
