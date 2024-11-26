@@ -53,6 +53,9 @@ func AnalyzeEmergencyCall(msg Request, client *openai.Client) (*EmergencyCall, e
 	5. Location details (extract lat/lng)
 	6. Appropriate icon (one of: Car, Medical, Fire, Police)
 
+	regarding Location details (extract lat/lng) set it to -1.9303844748850307, 30.15291759691398 if Location is a University
+	and -1.949377894156091, 30.126107587392756 if it's a market and this by default -1.9344642081495684, 30.14847027961296
+
 	Conversation transcript:
 	` + conversation + `
 
