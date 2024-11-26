@@ -75,7 +75,7 @@ func AnalyzeEmergencyCall(msg Request, client *openai.Client) (*EmergencyCall, e
 	response, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
+			Model: "ft:gpt-3.5-turbo-1106:personal:lasttry:AXleAxsu",
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    "system",
