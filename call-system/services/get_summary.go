@@ -50,11 +50,14 @@ func AnalyzeEmergencyCall(msg Request, client *openai.Client) (*EmergencyCall, e
 	2. A detailed summary (2-3 sentences)
 	3. Fear level (0-100)
 	4. Stress level (0-100)
-	5. Location details (extract lat/lng)
+	5. Location Details: Latitude and longitude (lat/lng) based on the identified location type:
+		If the location is a University, set:
+		"lat": -1.9303844748850307, "lng": 30.15291759691398.
+		If the location is a Market, set:
+		"lat": -1.949377894156091, "lng": 30.126107587392756.
+		For all other locations, set:
+		"lat": -1.9344642081495684, "lng": 30.14847027961296.
 	6. Appropriate icon (one of: Car, Medical, Fire, Police)
-
-	regarding Location details (extract lat/lng) set it to -1.9303844748850307, 30.15291759691398 if Location is a University
-	and -1.949377894156091, 30.126107587392756 if it's a market and if the place is different set it to -1.9344642081495684, 30.14847027961296
 
 	Conversation transcript:
 	` + conversation + `
