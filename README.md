@@ -65,11 +65,6 @@ To run the server and AI model checkout the `call-system` folder [README file](h
 
 ## Project Architecture
 
-![design](https://github.com/user-attachments/assets/5ccf2151-4856-455a-81d4-4f7fe4f1fffd)
-
-
-## User Workflow
-
 ![workflowai](https://github.com/user-attachments/assets/332948a6-f1bd-4917-998e-33f8c9b58b22)
 
 
